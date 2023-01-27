@@ -39,10 +39,11 @@ class INSTA_SENDER_DM(object):
         self.params = self.md5.update(self.username.encode('utf-8') + self.password.encode('utf-8'))
         self.device_id = self.generateDeviceId(self.md5.hexdigest())
 
-
+        """out vars into login()"""
         val_login,token,pk_id_mine = self.login()
-
+        """get id of member on telegram"""
         val_pk,pk = self.get_id_user_insta(username=self.target_user)
+        """main function that send to dm"""
         ultimate = self.send_dm(id_to_dm=pk,message=dm_message,AUTHORIZATION=self.dm_mess1(userid=pk_id_mine,token=token))
 
 
@@ -69,13 +70,14 @@ class INSTA_SENDER_DM(object):
             return generated_uuid
         else:
             return generated_uuid.replace('-', '')
-
+    """Get random device id""""
     def generateDeviceId(self, seed):
         volatile_seed = "12345"
         m = md5()
         m.update(seed.encode('utf-8') + volatile_seed.encode('utf-8'))
         return 'android-' + m.hexdigest()[:16]
 
+    """part of uri"""
     def generateSignature(self, data):
         try:
             parsedData = parse.quote(data)
@@ -88,7 +90,7 @@ class INSTA_SENDER_DM(object):
         return "android-" + seed[:16]
 
 
-
+    """get in base64 the json for send with method post"""
     def dm_mess1(self,userid,token):
 
         to_encrypt = {"ds_user_id": userid, "sessionid": token, "should_use_header_over_cookies": True}
@@ -100,7 +102,7 @@ class INSTA_SENDER_DM(object):
         return auth
 
 
-
+    """Do login on instagram"""
     def login(self, force = False):
         if (not self.isLoggedIn or force):
             if (self.SendRequest('si/fetch_headers/?challenge_type=signup&guid=' + self.generateUUID(False), None, True)):
@@ -130,6 +132,7 @@ class INSTA_SENDER_DM(object):
         a_uuid = self.generateUUID(True)
         a_device_id = self.generate_device_id(self.generateUUID(False))
 
+        """Header for send the msg"""#Got from requests I/O on network with firefox browser
         REQUEST_HEADERS = {
             'User-Agent':self.USER_AGENT,
             "X-Pigeon-Rawclienttime": str(round(time() * 1000)),
@@ -169,7 +172,7 @@ class INSTA_SENDER_DM(object):
         }
 
         #print('Dm to [{}] current session-id {}'.format(id_to_dm, my_user_id))
-
+        """All parameters in json for send media,such as photo"""
         send_media = {
             "client_context": self.generateUUID(True),
             "action": "send_item",
@@ -178,6 +181,7 @@ class INSTA_SENDER_DM(object):
             "media_id": "2687403059380025174_3949224551",
             "_uuid": a_uuid
         }
+        """send type of text msg"""
         send_txt = {
             "client_context": self.generateUUID(True),
             "action": "send_item",
@@ -186,7 +190,7 @@ class INSTA_SENDER_DM(object):
             "_uuid": a_uuid
         }
 
-
+        """send request post for see if the message is sent or not"""
         resp_message = self.s.post(self.API_URL+'direct_v2/threads/broadcast/text/',headers=REQUEST_HEADERS, data=send_txt)
         if resp_message.status_code == 200:
             return True
@@ -195,7 +199,7 @@ class INSTA_SENDER_DM(object):
             
 
 
-
+    """main function for send requests get or post"""
     def SendRequest(self, endpoint, post = None, login = False):
         if (not self.isLoggedIn and not login):
             raise Exception("Not logged in!\n")
@@ -228,7 +232,7 @@ class INSTA_SENDER_DM(object):
 
  
 
- #https://www.instagram.com/web/search/topsearch/?context=blended&query=gabriele_acone&rank_token=0.3953592318270893&count=1
+ #https://www.instagram.com/web/search/topsearch/?context=blended&query=username&rank_token=0.3953592318270893&count=1
     def get_id_user_insta(self,username):
         url = "https://www.instagram.com/web/search/topsearch/?context=blended&query="+username+"&rank_token=0.3953592318270893&count=1"
         self.s.headers.update ({'Connection' : 'close',
@@ -240,6 +244,7 @@ class INSTA_SENDER_DM(object):
 
 
         response = self.s.get(url)
+        #see in dict
         respJSON = response.json()
         #print(respJSON)
 
