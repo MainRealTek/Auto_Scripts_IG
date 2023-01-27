@@ -2,7 +2,7 @@ from requests import Session
 from json import loads
 from sys import argv
 
-
+"""Main object"""
 class GetRandomIdTarget(object):
     def __init__(self):
         self.req = Session()
@@ -15,7 +15,7 @@ class GetRandomIdTarget(object):
         self.USER_AGENT = 'Instagram 9.2.0 Android ({android_version}/{android_release}; 320dpi; 720x1280; {manufacturer}; {model}; armani; qcom; en_US)'.format(**self.DEVICE_SETTINTS)
 
 
-
+    """Get pk(id) of user on instagram whitch the parameter is the nickname"""
     def get_id_user_insta(self,query):
         result = []
         url = "https://www.instagram.com/web/search/topsearch/?context=blended&query="+query+"&rank_token=0.3953592318270893&count=1"
