@@ -12,7 +12,9 @@ from struct import pack
 from json import loads
 from sys import exit
 
+"""Main object Register Instagram"""
 
+"""Available updates ---> 1)IMAP Server scraper code of confirmation for verity identity|2)GSM with AT Commands for receive msg"""
 class RegisterIG(object):
     def __init__(self,email=str(),first_name=str(),pasw=str()) -> None:
         self.API_URL       = 'https://i.instagram.com/api/v1'
@@ -20,6 +22,7 @@ class RegisterIG(object):
         self.first_name    = first_name
         self.pasw          = pasw
 
+        """for key_id and pub_key vars you can scrape these two values cause change evry week/month,remember that is the first version"""
         self.key_id = 235
         self.pub_key = '3d274f9ca06a1d895ed48f7ca14465848aeb82f6ecc0be10333137f525b0135d'
         self.pasw_key = 10
@@ -40,7 +43,7 @@ class RegisterIG(object):
 
         pass
 
-
+    """Simple join with chars ascii in upper()""" 
     def get_random_string(self):
         # choose from all lowercase letter
         letters = ascii_lowercase
@@ -48,7 +51,7 @@ class RegisterIG(object):
         return result_str
 
 
-
+    """Main function that call all functions to allow register"""
     def main(self):
         check_users = self.check_user()
 
@@ -87,7 +90,7 @@ class RegisterIG(object):
 
 
 
-
+  
     def check_user(self):
         self.recv = self.ReqSend(endpoint='/web/accounts/web_create_ajax/attempt/',post_get=True,
                                                                                               datax={
@@ -224,7 +227,7 @@ class RegisterIG(object):
 
 
 
-
+    """Function found in an issue on github! It is only my part of source code copied""" 
     def encrypt_password(self,key_id, pub_key, password, version=10):
         key = Random.get_random_bytes(32)
         iv = bytes([0] * 12)
