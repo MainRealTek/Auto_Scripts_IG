@@ -1,0 +1,4 @@
+querystringsafe-base64
+uuid
+colorama
+requests

@@ -1,0 +1,5 @@
+PyNaCl
+hashlib
+colorama
+querystringsafe-base64
+requests
