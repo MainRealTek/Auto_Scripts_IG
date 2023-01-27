@@ -5,6 +5,8 @@ from sys import argv,exit
 from time import sleep
 
 
+"""Main function to call the objects"""
+
 
 
 def clear():
